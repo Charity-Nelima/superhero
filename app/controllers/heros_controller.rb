@@ -12,6 +12,7 @@ class HerosController < ApplicationController
   def show
     render json: @hero
   end
+  end
 
   # POST /heros
   def create
