@@ -1,16 +1,17 @@
 class PowersController < ApplicationController
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
   before_action :set_power, only: %i[ show update destroy ]
 
   # GET /powers
   def index
-    @powers = Power.all
+    powers = Power.all
 
-    render json: @powers
+    render json: powers, except: [:created_at, :updated_at]
   end
 
   # GET /powers/1
   def show
-    render json: @power
+    render json: @power, except: [:created_at, :updated_at]
   end
 
   # POST /powers
@@ -27,9 +28,10 @@ class PowersController < ApplicationController
   # PATCH/PUT /powers/1
   def update
     if @power.update(power_params)
-      render json: @power
+      render json: @power, except: [:created_at, :updated_at]
     else
-      render json: @power.errors, status: :unprocessable_entity
+      render json: {error: "Power not found"}, status: :not_found
+      # render json: @power.errors, status: :unprocessable_entity
     end
   end
 
@@ -47,5 +49,10 @@ class PowersController < ApplicationController
     # Only allow a list of trusted parameters through.
     def power_params
       params.require(:power).permit(:name, :description)
+    end
+    private
+
+    def render_not_found_response
+        render json: {error: "Power not found"}, status: :not_found
     end
 end

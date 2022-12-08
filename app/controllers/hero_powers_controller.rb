@@ -5,7 +5,7 @@ class HeroPowersController < ApplicationController
   def index
     @hero_powers = HeroPower.all
 
-    render json: @hero_powers
+    render json: @hero_powers, except: [:created_at, :updated_at]
   end
 
   # GET /hero_powers/1
@@ -18,7 +18,8 @@ class HeroPowersController < ApplicationController
     @hero_power = HeroPower.new(hero_power_params)
 
     if @hero_power.save
-      render json: @hero_power, status: :created, location: @hero_power
+      render json: @hero_power, include: :power, except: [:created_at, :updated_at]
+      #  status: :created, location: @hero_power
     else
       render json: @hero_power.errors, status: :unprocessable_entity
     end

@@ -38,3 +38,17 @@ Hero.create!([
 ])
 
 puts "✅ Done seeding!"
+
+HeroPower.create!([
+ 
+  {
+    # id: 1, 
+    strength:"average",
+    hero_id: "1",
+    power_id: "2",
+  
+    
+  },
+])
+
+puts "✅ Done seeding!"
